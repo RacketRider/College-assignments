@@ -39,72 +39,54 @@ void create()
         }
     }
 }
-void insert() 
+void insert()
 {
-    int pos,ele,i;
-    struct node *nnode,*temp;
+    int ele;
+    struct node *nnode;
+    scanf("%d",&ele); 
+    printf("Before insertion ");
+    display();
     nnode=(struct node *)malloc(sizeof(struct node));
-    printf("Enter position to insert:");
-    scanf("%d",&pos);
-    printf("Enter element to insert:");
-    scanf("%d",&ele);
     nnode->data=ele;
-    if(pos==1) 
-    {
-        nnode->next=head;
-        head=nnode;
-        display();
-        return;
-    }
-    temp=head;
-    for(i=1;i<pos-1 && temp!=NULL;i++) 
-        temp=temp->next;
-    if (temp==NULL) 
-    {
-        printf("Invalid position!\n");
-        free(nnode);
-        return;
-    }
-    nnode->next=temp->next;
-    temp->next=nnode;
-    printf("Element inserted successfully.\n");
+    nnode->next=head;
+    head=nnode;
+    printf("After insertion ");
     display();
 }
-void deletion() 
+
+void deletion()
 {
-    int pos,i;
-    struct node *temp,*prev;
-    if(head==NULL) 
-    {
-        printf("List is empty. Can't delete.\n");
+    int key;
+    struct node *temp=head,*prev=NULL;
+    scanf("%d",&key);
+    if(head==NULL)
         return;
-    }
-    printf("Enter position to delete: ");
-    scanf("%d",&pos);
-    if(pos==1) 
+    printf("Before Delete ");
+    display();
+    if(head->data==key)
     {
         temp=head;
         head=head->next;
         free(temp);
+        printf("Node with value %d deleted.\n", key);
+        printf("After Delete ");
         display();
         return;
     }
-    temp=head;
-    for(i=1;i<pos && temp!=NULL;i++) 
+    while(temp!=NULL && temp->data!=key)
     {
         prev=temp;
         temp=temp->next;
     }
-    if(temp==NULL) 
-    {
-        printf("Invalid position!\n");
+    if(temp==NULL)
         return;
-    }
     prev->next=temp->next;
     free(temp);
-    printf("Element deleted successfully.\n");
+    printf("Node with value %d deleted.\n", key);
+    printf("After Delete ");
     display();
 }
+
 void search() 
 {
     int key,pos=1;
@@ -116,6 +98,7 @@ void search()
     }
     printf("Enter element to search: ");
     scanf("%d",&key);
+    display();
     while(temp!=NULL) 
     {
         if(temp->data==key) 
@@ -126,59 +109,54 @@ void search()
         temp=temp->next;
         pos++;
     }
-    printf("Element not found.\n");
+    printf("Element %d not found in the list.\n",key);
 }
 void display()
 {
     struct node *temp=head;
-    if(head==NULL) 
+    if(head==NULL)
     {
-        printf("List is empty.\n");
+        printf("Linked List: NULL\n");
         return;
     }
-    printf("List elements: ");
-    while(temp!=NULL) 
+    printf("Linked List: ");
+    while(temp!=NULL)
     {
-        printf("%d ",temp->data);
+        printf("%d -> ",temp->data);
         temp=temp->next;
     }
-    printf("\n");
+    printf("NULL\n");
 }
-int main() 
+int main()
 {
+    int t=6;
     int ch;
-    while(1) 
+    while (t--)
     {
-        printf("\n--- SLL MENU ---\n");
-        printf("1. Create\n");
-        printf("2. Insert\n");
-        printf("3. Delete\n");
-        printf("4. Search\n");
-        printf("5. Display\n");
-        printf("6. Exit\n");
-        printf("Enter your choice: ");
-        scanf("%d",&ch);
-        switch(ch) 
-        {
-            case 1:
-                create(); 
-                break;
-            case 2:
-                insert(); 
-                break;
-            case 3:
-                deletion(); 
-                break;
-            case 4: 
-                search(); 
-                break;
-            case 5:
-                display(); 
-                break;
-            case 6: 
-                return 0;
-            default: 
-                printf("Invalid choice! Try again.\n");
-        }
+        scanf("%d", &ch);
+        switch (ch)
+    {
+        case 1:
+            create();      
+            break;
+        case 2:
+            deletion();
+            break;
+        case 3:
+            search();
+            break;
+        case 4:
+            insert();
+            break;
+        case 5:
+            display();
+            break;
+        case 6:           
+            display();
+            break;
+        case 7:
+            return 0;
+}
+
     }
 }
