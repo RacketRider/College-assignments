@@ -8,8 +8,6 @@ void insert();
 void deletion();
 void search();
 void display();
-/*Abhijit Prasad Mallick 
-20252501001*/
 void create() 
 {
     int i;
@@ -63,13 +61,13 @@ void deletion()
     }
     printf("Enter position to delete (1 to %d): ",n);
     scanf("%d",&pos);
-    if (pos<1||pos>n) 
+    if(pos<1||pos>n) 
     {
         printf("Invalid position!\n");
         return;
     }
-    for (i = pos - 1; i < n - 1; i++)
-        ar[i] = ar[i + 1];
+    for(i=pos-1;i<n-1;i++)
+        ar[i]=ar[i+1];
     n--;
     printf("Element deleted successfully.\n");
     display();
@@ -77,18 +75,18 @@ void deletion()
 void search() 
 {
     int se,i,fnd = 0;
-    if (n==0) 
+    if(n==0) 
     {
         printf("List is empty.\n");
         return;
     }
     printf("Enter element to search: ");
     scanf("%d",&se);
-    for (i=0;i<n;i++) 
+    for(i=0;i<n;i++) 
     {
-        if (ar[i]==se) 
+        if(ar[i]==se) 
         {
-            printf("Element %d found at position %d.\n",se,i+1);
+            printf("%d found at position %d.\n",se,i+1);
             fnd=1;
             break;
         }
@@ -104,23 +102,23 @@ void display()
         return;
     }
     printf("List elements: ");
-    for (int i = 0; i < n; i++)
+    for(int i=0;i<n;i++)
         printf("%d ",ar[i]);
     printf("\n");
 }
 int main() 
 {
+    int t=3;
     int ch;
-    while(1) 
+    printf("1. Create\n");
+    printf("2. Delete\n");
+    printf("3. Search\n");
+    printf("4. Insert\n");
+    printf("5. Display\n");
+    printf("6. Exit\n");
+    printf("Enter your choice: ");
+    while(t--) 
     {
-        printf("\n--- ABL MENU ---\n");
-        printf("1. Create\n");
-        printf("2. Insert\n");
-        printf("3. Delete\n");
-        printf("4. Search\n");
-        printf("5. Display\n");
-        printf("6. Exit\n");
-        printf("Enter your choice: ");
         scanf("%d",&ch);
         switch(ch) 
         {
@@ -128,13 +126,13 @@ int main()
                 create(); 
                 break;
             case 2:
-                insert(); 
-                break;
-            case 3:
                 deletion(); 
                 break;
-            case 4: 
+            case 3:
                 search(); 
+                break;
+            case 4: 
+                insert(); 
                 break;
             case 5:
                 display(); 

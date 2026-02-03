@@ -7,31 +7,50 @@ struct node {
 };
 struct node *head=NULL;
 void create();
-void insert();
-void deletion();
-void search();
-void display();
+void display(char);
+void search(int);
+void insert(int, int);
+void traverse(int, char);
 /*Abhijit Prasad Mallick 
 20252501001*/
+void deletion(int val) 
+{
+    struct node *temp=head;
+    if(head==NULL)
+        return;
+    if(head->data==val) 
+    {
+        temp=head;
+        head=head->next;
+        if(head!=NULL)
+            head->prev=NULL;
+        free(temp);
+        return;
+    }
+    while(temp!=NULL && temp->data!=val)
+        temp=temp->next;
+    if(temp==NULL)
+        return;
+    if(temp->next!=NULL)
+        temp->next->prev=temp->prev;
+    temp->prev->next=temp->next;
+    free(temp);
+}
 void create() 
 {
-    int n,i,ele;
-    struct node *temp,*nnode;
-    head=NULL;
-    printf("Enter number of elements: ");
-    scanf("%d",&n);
-    for (i=0;i<n;i++) 
+    int n, i;
+    scanf("%d", &n);
+    struct node *temp = NULL, *nnode;
+    for(i=0;i<n;i++) 
     {
-        nnode=(struct node *)malloc(sizeof(struct node));
-        printf("Enter element %d:",i+1);
-        scanf("%d",&ele);
-        nnode->data=ele;
-        nnode->prev=NULL;
+        nnode=(struct node*)malloc(sizeof(struct node));
+        scanf("%d", &nnode->data);
         nnode->next=NULL;
+        nnode->prev=NULL;
         if(head==NULL) 
         {
             head=nnode;
-            temp=head;
+            temp=nnode;
         } 
         else 
         {
@@ -41,151 +60,164 @@ void create()
         }
     }
 }
-void insert() 
+void display(char dir) 
 {
-    int pos,ele,i;
-    struct node *nnode,*temp;
-    nnode=(struct node *)malloc(sizeof(struct node));
-    printf("Enter position to insert:");
-    scanf("%d",&pos);
-    printf("Enter element to insert: ");
-    scanf("%d",&ele);
-    nnode->data=ele;
-    if(pos==1) 
-    {
-        nnode->prev=NULL;
-        nnode->next=head;
-        if(head!=NULL)
-            head->prev=nnode;
-        head=nnode;
-        display();
-        return;
-    }
-    temp=head;
-    for(i=1;i<pos-1 && temp!=NULL;i++) 
-        temp=temp->next;
-    if(temp==NULL) 
-    {
-        printf("Invalid position!\n");
-        free(nnode);
-        return;
-    }
-    nnode->next=temp->next;
-    nnode->prev=temp;
-    if(temp->next!=NULL)
-        temp->next->prev=nnode;
-    temp->next=nnode;
-    printf("Element inserted successfully.\n");
-    display();
-}
-void deletion() 
-{
-    int pos,i;
     struct node *temp;
     if(head==NULL) 
     {
-        printf("List is empty. Can't delete.\n");
+        printf("Linked List (Forward): NULL");
         return;
     }
-    printf("Enter position to delete: ");
-    scanf("%d",&pos);
-    temp=head;
-    if(pos==1) {
-        head=temp->next;
-        if(head!=NULL)
-            head->prev=NULL;
-        free(temp);
-        display();
-        return;
-    }
-    for(i=1;i<pos && temp!=NULL;i++) 
-        temp=temp->next;
-    if(temp==NULL) 
+    if(dir=='F') 
     {
-        printf("Invalid position!\n");
-        return;
+        printf("Linked List (Forward): ");
+        temp=head;
+        while(temp!=NULL) 
+        {
+            printf("%d <-> ",temp->data);
+            temp=temp->next;
+        }
+        printf("NULL");
     }
-    if(temp->next!=NULL)
-        temp->next->prev=temp->prev;
-    temp->prev->next=temp->next;
-    free(temp);
-    printf("Element deleted successfully.\n");
-    display();
+    else 
+    {
+        temp=head;
+        while(temp->next!=NULL)
+            temp = temp->next;
+        printf("Linked List (Backward): ");
+        while(temp!=NULL) 
+        {
+            printf("%d <-> ", temp->data);
+            temp=temp->prev;
+        }
+        printf("NULL");
+    }
 }
-void search() 
-{
-    int se,pos=1;
+void search(int key) {
     struct node *temp=head;
-    if(head==NULL) 
-    {
-        printf("List is empty.\n");
-        return;
-    }
-    printf("Enter element to search: ");
-    scanf("%d",&se);
+    int pos=1;
     while(temp!=NULL) 
     {
-        if(temp->data==se) 
+        if(temp->data==key) 
         {
-            printf("Element %d found at position %d.\n",se,pos);
+            printf("Node with value %d found at position %d.", key, pos);
             return;
         }
         temp=temp->next;
         pos++;
     }
-    printf("Element not found.\n");
+    printf("Node with value %d not found.",key);
 }
-void display() 
+void insert(int val,int pos) 
 {
-    struct node *temp=head;
-    if(head==NULL) 
+    struct node *temp=head,*nnode;
+    int i=1;
+    nnode=(struct node*)malloc(sizeof(struct node));
+    nnode->data=val;
+    nnode->next=NULL;
+    nnode->prev=NULL;
+    if(pos==1) 
     {
-        printf("List is empty.\n");
+        nnode->next=head;
+        if(head!=NULL)
+            head->prev=nnode;
+        head=nnode;
         return;
     }
-    printf("List elements:");
-    while(temp!=NULL) 
+    while(i<pos-1 && temp!=NULL) 
     {
-        printf("%d ",temp->data);
         temp=temp->next;
+        i++;
     }
-    printf("\n");
+    if(temp==NULL)
+        return;
+    nnode->next=temp->next;
+    if(temp->next!=NULL)
+        temp->next->prev=nnode;
+    temp->next=nnode;
+    nnode->prev=temp;
+}
+void traverse(int val,char dir) 
+{
+    struct node *temp=head;
+    while(temp!=NULL && temp->data!=val)
+        temp=temp->next;
+    if(temp==NULL)
+        return;
+    if(dir=='F') 
+    {
+        printf("Traversal from element %d in F direction: ", val);
+        while(temp!=NULL) 
+        {
+            printf("%d <-> ",temp->data);
+            temp=temp->next;
+        }
+        printf("NULL");
+    }
+    else 
+    {
+        printf("Traversal from element %d in B direction: ", val);
+        while(temp!=NULL) 
+        {
+            printf("%d <-> ",temp->data);
+            temp=temp->prev;
+        }
+        printf("NULL");
+    }
 }
 int main() 
 {
     int ch;
-    while(1) 
+    scanf("%d",&ch);     
+    if(ch==1) 
     {
-        printf("\n--- DLL MENU ---\n");
-        printf("1. Create\n");
-        printf("2. Insert\n");
-        printf("3. Delete\n");
-        printf("4. Search\n");
-        printf("5. Display\n");
-        printf("6. Exit\n");
-        printf("Enter your choice: ");
-        scanf("%d",&ch);
-        switch(ch) 
+        create();         
+        scanf("%d",&ch);  
+        if(ch==2)        
         {
-            case 1:
-                create(); 
-                break;
-            case 2:
-                insert(); 
-                break;
-            case 3:
-                deletion(); 
-                break;
-            case 4: 
-                search(); 
-                break;
-            case 5:
-                display(); 
-                break;
-            case 6: 
-                return 0;
-            default: 
-                printf("Invalid choice! Try again.\n");
+            int val;
+            scanf("%d", &val);
+            deletion(val);
+            scanf("%d",&ch);
+            if(ch==4) 
+            {
+                char d;
+                scanf(" %c",&d);
+                display(d);
+            }
+        }
+        else if(ch==3)     
+        {
+            int val,pos;
+            scanf("%d %d",&val,&pos);
+            insert(val,pos);
+            scanf("%d",&ch);
+            if(ch==4) 
+            {
+                char d;
+                scanf(" %c",&d);
+                display(d);
+            }
+        }
+        else if(ch==4)    
+        {
+            char d;
+            scanf(" %c",&d);
+            display(d);
+        }
+        else if(ch==5)     
+        {
+            int x;
+            scanf("%d", &x);
+            search(x);
+        }
+        else if(ch==6)   
+        {
+            int x;
+            char d;
+            scanf("%d %c", &x, &d);
+            traverse(x, d);
         }
     }
+    return 0;
 }

@@ -1,162 +1,189 @@
 #include <stdio.h>
 #include <stdlib.h>
-struct node 
+/*Abhijit Prasad Mallick
+20252501001*/
+void display();
+void traverse();
+void create();
+void search();
+void delete();
+void insert();
+struct Node
 {
     int data;
-    struct node *next;
+    struct Node *next;
 };
-struct node *head = NULL;
-void create();
-void insert();
-void deletion();
-void search();
-void display();
-/*Abhijit Prasad Mallick 
-20252501001*/
-void create() 
+struct Node *head=NULL;
+void traverse()
 {
-    int n,i,ele;
-    struct node *temp,*nnode;
-    head=NULL;
-    printf("Enter number of elements: ");
-    scanf("%d",&n);
-    for (i=0;i<n;i++) 
+    struct Node *temp=head;
+    if(head==NULL)
     {
-        nnode=(struct node *)malloc(sizeof(struct node));
-        printf("Enter element %d:",i+1);
-        scanf("%d",&ele);
-        nnode->data=ele;
+        printf("empty list");
+        return ;
+    }
+    while(temp!=NULL)
+    {
+        printf("%d->",temp->data);
+        temp=temp->next;
+    }
+    printf("NULL");
+}
+void create()
+{
+    struct Node *nnode,*temp;
+    int n;
+    scanf("%d",&n);
+    if(n<=0)
+    {
+        printf(" invalid size");
+        return ;
+    }
+    int i;
+    for(i=0;i<n;i++)
+    {
+        nnode=(struct Node*)malloc(sizeof(struct Node));
+        scanf("%d",&nnode->data);
         nnode->next=NULL;
-        if(head==NULL) 
-        {
-            head=nnode;
-            temp=head;
-        } 
-        else 
-        {
-            temp->next=nnode;
-            temp=nnode;
-        }
+        if(head==NULL){
+        head=nnode;
+        temp=nnode;
+    }
+    else
+    {
+        temp->next=nnode;
+        temp=nnode;
+    }
     }
 }
-void insert()
+void delete()
 {
-    int ele;
-    struct node *nnode;
-    scanf("%d",&ele); 
-    printf("Before insertion ");
-    display();
-    nnode=(struct node *)malloc(sizeof(struct node));
-    nnode->data=ele;
-    nnode->next=head;
-    head=nnode;
-    printf("After insertion ");
-    display();
-}
-
-void deletion()
-{
-    int key;
-    struct node *temp=head,*prev=NULL;
-    scanf("%d",&key);
-    if(head==NULL)
+    struct Node *temp,*prev=NULL;
+    int val;
+    if(head == NULL){
+        printf("List is empty!\n");
         return;
+    }
     printf("Before Delete ");
     display();
-    if(head->data==key)
+    scanf("%d", &val);
+    temp = head;
+    if(temp->data==val)
     {
-        temp=head;
-        head=head->next;
+        head=temp->next;
+        printf("\nNode with value %d deleted.\n",temp->data);
         free(temp);
-        printf("Node with value %d deleted.\n", key);
         printf("After Delete ");
         display();
         return;
     }
-    while(temp!=NULL && temp->data!=key)
+    while(temp!=NULL && temp->data!=val)
     {
         prev=temp;
         temp=temp->next;
     }
     if(temp==NULL)
+    {
+        printf("\nValue not found!\n");
+        printf("After Delete ");
+        display();
         return;
+    }
     prev->next=temp->next;
+    printf("\nNode with value %d deleted.\n", temp->data);
     free(temp);
-    printf("Node with value %d deleted.\n", key);
     printf("After Delete ");
     display();
 }
-
-void search() 
+void search()
 {
-    int key,pos=1;
-    struct node *temp=head;
-    if(head==NULL) 
-    {
-        printf("List is empty.\n");
+    struct Node *temp=head;
+    int ele,pos=1;
+    if(head==NULL){
+        printf("List is empty\n");
         return;
     }
-    printf("Enter element to search: ");
-    scanf("%d",&key);
-    display();
-    while(temp!=NULL) 
+    printf("Enter the element:");
+    scanf("%d", &ele);
+    while(temp!=NULL)
     {
-        if(temp->data==key) 
+        if(temp->data==ele)
         {
-            printf("Element %d found at position %d.\n",key,pos);
+            display();
+            printf("\nElement %d found at position %d.\n", ele, pos);
             return;
         }
         temp=temp->next;
         pos++;
     }
-    printf("Element %d not found in the list.\n",key);
+    display();
+    printf("\nElement %d not found in the list.\n",ele);
 }
 void display()
 {
-    struct node *temp=head;
+    struct Node *temp=head;    
     if(head==NULL)
-    {
+    {    
         printf("Linked List: NULL\n");
-        return;
+        return ;
     }
-    printf("Linked List: ");
+    printf("Linked List:");
     while(temp!=NULL)
     {
-        printf("%d -> ",temp->data);
+        printf(" %d ->",temp->data);
         temp=temp->next;
     }
     printf("NULL\n");
 }
+void insert()
+{
+    struct Node *nnode;
+    printf("Before insertion ");
+    display();
+    nnode=(struct Node*)malloc(sizeof(struct Node));
+    scanf("%d",&nnode->data);
+    nnode->next=head;
+    head=nnode;
+    printf("After insertion ");
+    display();
+}
 int main()
 {
-    int t=6;
-    int ch;
-    while (t--)
+    int j;
+    int k=2;
+    while(k--)
     {
-        scanf("%d", &ch);
-        switch (ch)
-    {
-        case 1:
-            create();      
-            break;
-        case 2:
-            deletion();
-            break;
-        case 3:
-            search();
-            break;
-        case 4:
-            insert();
-            break;
-        case 5:
-            display();
-            break;
-        case 6:           
-            display();
-            break;
-        case 7:
-            return 0;
-}
-
+        printf("1.Create\n");
+        printf("2.Delete\n");
+        printf("3.Search\n");
+        printf("4.Insert\n");
+        printf("5.Display\n");
+        printf("6.Traverse\n");
+        printf("Enter your choice:\n");
+        scanf("%d",&j);
+        switch(j)
+        {
+            case 1:
+                create();
+                break;
+            case 2:
+                delete();
+                break;
+            case 5:
+                display();
+                break;
+            case 3:
+                search();
+                break;
+            case 4:
+                insert();
+                break;
+            case 6:
+                traverse();
+                break;
+            default:
+                printf("not a valid choice");
+                return 0;
+        }
     }
 }
