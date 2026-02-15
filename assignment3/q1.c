@@ -1,7 +1,7 @@
 #include <stdio.h>
-
 #define max 30
-
+/*Abhijit Prasad Mallick
+20252501001*/
 int queue[max];
 int f=-1,r=-1;
 void enqueue();
