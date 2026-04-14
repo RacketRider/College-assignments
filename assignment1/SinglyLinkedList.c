@@ -130,7 +130,7 @@ void display()
     printf("Linked List:");
     while(temp!=NULL)
     {
-        printf(" %d ->",temp->data);
+        printf(" %d -> ",temp->data);
         temp=temp->next;
     }
     printf("NULL\n");
@@ -150,16 +150,16 @@ void insert()
 int main()
 {
     int j;
-    int k=2;
+    int k=3;
+    printf("1.Create\n");
+    printf("2.Delete\n");
+    printf("3.Search\n");
+    printf("4.Insert\n");
+    printf("5.Display\n");
+    printf("6.Traverse\n");
+    printf("Enter your choice:\n");
     while(k--)
     {
-        printf("1.Create\n");
-        printf("2.Delete\n");
-        printf("3.Search\n");
-        printf("4.Insert\n");
-        printf("5.Display\n");
-        printf("6.Traverse\n");
-        printf("Enter your choice:\n");
         scanf("%d",&j);
         switch(j)
         {
@@ -168,10 +168,10 @@ int main()
                 break;
             case 2:
                 delete();
-                break;
+                return 0;;
             case 5:
                 display();
-                break;
+                return 0;
             case 3:
                 search();
                 break;
