@@ -1,96 +1,85 @@
 Program 	#include <stdio.h>
 #include <string.h>
-
+/*Abhijit Prasad Mallick
+20252501001*/
 #define MAX_NODES 100
 #define NAME_LEN 50
 
-char nodeNames[MAX_NODES][NAME_LEN];
-int graphMat[MAX_NODES][MAX_NODES];
-int queueData[MAX_NODES];
-int visitMark[MAX_NODES];
+char nnms[MAX_NODES][NAME_LEN];
+int grphmt[MAX_NODES][MAX_NODES];
+int qudat[MAX_NODES];
+int vstmrk[MAX_NODES];
 int bfsOrder[MAX_NODES];
-int totalNodes;
-
-int findNodeIndex(char key[])
+int totnod;
+int fndndind(char key[]);
+void prntmtrx();
+void prntqust(int frnt,int rear);
+void bfsrnr(int startIndex);
+void prntqust(int frnt,int rear)
 {
-    int idx;
-    for(idx=0;idx<totalNodes;idx++)
+    int pos;
+    printf("  Queue:");
+    for(pos=frnt;pos<=rear;pos++)
     {
-        if(strcmp(nodeNames[idx],key)==0)
-        {
-            return idx;
-        }
+        printf(" %s",nnms[qudat[pos]]);
     }
-    return -1;
+    printf("\n");
 }
-
-void printMatrix()
+void prntmtrx()
 {
     int row,col;
     printf("Adjacency Matrix:\n\n");
     printf("%-5s","");
-    for(col=0;col<totalNodes;col++)
+    for(col=0;col<totnod;col++)
     {
-        printf("%-5s",nodeNames[col]);
+        printf("%-5s",nnms[col]);
     }
     printf("\n");
-    for(row=0;row<totalNodes;row++)
+    for(row=0;row<totnod;row++)
     {
-        printf("%-5s",nodeNames[row]);
-        for(col=0;col<totalNodes;col++)
+        printf("%-5s",nnms[row]);
+        for(col=0;col<totnod;col++)
         {
-            printf("%-5d",graphMat[row][col]);
+            printf("%-5d",grphmt[row][col]);
         }
         printf("\n");
     }
 }
-
-void printQueueState(int front,int rear)
+void bfsrnr(int startIndex)
 {
-    int pos;
-    printf("  Queue:");
-    for(pos=front;pos<=rear;pos++)
-    {
-        printf(" %s",nodeNames[queueData[pos]]);
-    }
-    printf("\n");
-}
+    int frnt=0,rear=-1;
+    int crrnt,next,orderPos=0;
 
-void runBfs(int startIndex)
-{
-    int front=0,rear=-1;
-    int current,next,orderPos=0;
-
-    queueData[++rear]=startIndex;
-    visitMark[startIndex]=1;
+    qudat[++rear]=startIndex;
+    vstmrk[startIndex]=1;
 
     printf("\nStep-by-step BFS traversal:\n\n");
 
-    while(front<=rear)
+    while(frnt<=rear)
     {
-        current=queueData[front++];
-        bfsOrder[orderPos++]=current;
+        crrnt=qudat[frnt++];
+        bfsOrder[orderPos++]=crrnt;
 
-        printf("Visited: %s\n\n",nodeNames[current]);
+        printf("Visited: %s\n\n",nnms[crrnt]);
 
-        for(next=0;next<totalNodes;next++)
+        for(next=0;next<totnod;next++)
         {
-            if(graphMat[current][next]!=0 && !visitMark[next])
+            if(grphmt[crrnt][next]!=0 && !vstmrk[next])
             {
-                visitMark[next]=1;
-                queueData[++rear]=next;
-                printf("  %s --> %s (edge exists, enqueueing)\n\n",nodeNames[current],nodeNames[next]);
+                vstmrk[next]=1;
+                qudat[++rear]=next;
+                printf("  %s --> %s (edge exists, enqueueing)\n\n",nnms[crrnt],nnms[next]);
             }
         }
 
-        printQueueState(front,rear);
+        prntqust(frnt,rear);
     }
 
     printf("\nFinal BFS Traversal Order:\n\n");
-    for(current=0;current<orderPos;current++)
+    for(crrnt=0;crrnt<orderPos;crrnt++)
     {
-        printf("%s",nodeNames[bfsOrder[current]]);
-        if(current<orderPos-1)
+        printf("%s",nnms[bfsOrder[crrnt]]);
+        if(crrnt<orderPos-1)
         {
             printf(" ");
         }
@@ -98,32 +87,43 @@ void runBfs(int startIndex)
     printf("\n\nTime Complexity: O(V + E)\n\n");
     printf("Space Complexity: O(V)\n");
 }
-
+int fndndind(char key[])
+{
+    int idx;
+    for(idx=0;idx<totnod;idx++)
+    {
+        if(strcmp(nnms[idx],key)==0)
+        {
+            return idx;
+        }
+    }
+    return -1;
+}
 int main()
 {
     int row,col,startIndex;
     char startName[NAME_LEN];
 
-    scanf("%d",&totalNodes);
+    scanf("%d",&totnod);
 
-    for(row=0;row<totalNodes;row++)
+    for(row=0;row<totnod;row++)
     {
-        scanf("%s",nodeNames[row]);
+        scanf("%s",nnms[row]);
     }
 
-    for(row=0;row<totalNodes;row++)
+    for(row=0;row<totnod;row++)
     {
-        for(col=0;col<totalNodes;col++)
+        for(col=0;col<totnod;col++)
         {
-            scanf("%d",&graphMat[row][col]);
+            scanf("%d",&grphmt[row][col]);
         }
     }
 
     scanf("%s",startName);
-    startIndex=findNodeIndex(startName);
+    startIndex=fndndind(startName);
 
-    printMatrix();
-    runBfs(startIndex);
+    prntmtrx();
+    bfsrnr(startIndex);
 
     return 0;
 }

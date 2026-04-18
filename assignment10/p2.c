@@ -1,95 +1,54 @@
-Program 	#include <stdio.h>
+#include <stdio.h>
 #include <string.h>
-
+/*Abhijit Prasad Mallick
+20252501001*/
 #define MAX_NODES 100
 #define NAME_LEN 50
 
-char nodeNames[MAX_NODES][NAME_LEN];
-int graphMat[MAX_NODES][MAX_NODES];
-int stackData[MAX_NODES];
-int visitMark[MAX_NODES];
+char nodnms[MAX_NODES][NAME_LEN];
+int grphmt[MAX_NODES][MAX_NODES];
+int stckdat[MAX_NODES];
+int vstmrk[MAX_NODES];
 int dfsOrder[MAX_NODES];
-int totalNodes;
-
-int findNodeIndex(char key[])
-{
-    int idx;
-    for(idx=0;idx<totalNodes;idx++)
-    {
-        if(strcmp(nodeNames[idx],key)==0)
-        {
-            return idx;
-        }
-    }
-    return -1;
-}
-
-void printMatrix()
-{
-    int row,col;
-    printf("Adjacency Matrix:\n\n");
-    printf("%-5s","");
-    for(col=0;col<totalNodes;col++)
-    {
-        printf("%-5s",nodeNames[col]);
-    }
-    printf("\n");
-    for(row=0;row<totalNodes;row++)
-    {
-        printf("%-5s",nodeNames[row]);
-        for(col=0;col<totalNodes;col++)
-        {
-            printf("%-5d",graphMat[row][col]);
-        }
-        printf("\n");
-    }
-}
-
-void printStackState(int top)
-{
-    int pos;
-    printf("  Stack:");
-    for(pos=0;pos<=top;pos++)
-    {
-        printf(" %s",nodeNames[stackData[pos]]);
-    }
-    printf("\n");
-}
-
-void runDfs(int startIndex)
+int totnod;
+int fndnodindx(char key[]);
+void prntmtrx();
+void prntstck(int top);
+void rndfs(int startIndex);
+void rndfs(int startIndex)
 {
     int top=-1;
     int current,next,orderPos=0;
 
-    stackData[++top]=startIndex;
-    visitMark[startIndex]=1;
+    stckdat[++top]=startIndex;
+    vstmrk[startIndex]=1;
 
     printf("\nStep-by-step DFS traversal:\n\n");
 
     while(top>=0)
     {
-        current=stackData[top--];
+        current=stckdat[top--];
         dfsOrder[orderPos++]=current;
 
-        printf("Visited: %s\n\n",nodeNames[current]);
+        printf("Visited: %s\n\n",nodnms[current]);
 
-        for(next=totalNodes-1;next>=0;next--)
+        for(next=totnod-1;next>=0;next--)
         {
-            if(graphMat[current][next]!=0 && !visitMark[next])
+            if(grphmt[current][next]!=0 && !vstmrk[next])
             {
-                visitMark[next]=1;
-                stackData[++top]=next;
-                printf("  %s --> %s (edge exists, pushing to stack)\n\n",nodeNames[current],nodeNames[next]);
+                vstmrk[next]=1;
+                stckdat[++top]=next;
+                printf("  %s --> %s (edge exists, pushing to stack)\n\n",nodnms[current],nodnms[next]);
             }
         }
 
-        printStackState(top);
+        prntstck(top);
     }
 
     printf("\nFinal DFS Traversal Order:\n\n");
     for(current=0;current<orderPos;current++)
     {
-        printf("%s",nodeNames[dfsOrder[current]]);
+        printf("%s",nodnms[dfsOrder[current]]);
         if(current<orderPos-1)
         {
             printf(" ");
@@ -98,32 +57,80 @@ void runDfs(int startIndex)
     printf("\n\nTime Complexity: O(V + E)\n\n");
     printf("Space Complexity: O(V)\n");
 }
-
+void prntmtrx()
+{
+    int row,col;
+    printf("Adjacency Matrix:\n\n");
+    printf("%-5s","");
+    for(col=0;col<totnod;col++)
+    {
+        printf("%-5s",nodnms[col]);
+    }
+    printf("\n");
+    for(row=0;row<totnod;row++)
+    {
+        printf("%-5s",nodnms[row]);
+        for(col=0;col<totnod;col++)
+        {
+            printf("%-5d",grphmt[row][col]);
+        }
+        printf("\n");
+    }
+}
+void prntstck(int top)
+{
+    int pos;
+    printf("  Stack:");
+    for(pos=0;pos<=top;pos++)
+    {
+        printf(" %s",nodnms[stckdat[pos]]);
+    }
+    printf("\n");
+}
+int fndnodindx(char key[])
+{
+    int idx;
+    for(idx=0;idx<totnod;idx++)
+    {
+        if(strcmp(nodnms[idx],key)==0)
+        {
+            return idx;
+        }
+    }
+    return -1;
+}
 int main()
 {
     int row,col,startIndex;
-    char startName[NAME_LEN];
+    char strtnm[NAME_LEN];
 
-    scanf("%d",&totalNodes);
+    scanf("%d",&totnod);
 
-    for(row=0;row<totalNodes;row++)
+    for(row=0;row<totnod;row++)
     {
-        scanf("%s",nodeNames[row]);
+        scanf("%s",nodnms[row]);
     }
 
-    for(row=0;row<totalNodes;row++)
+    for(row=0;row<totnod;row++)
     {
-        for(col=0;col<totalNodes;col++)
+        for(col=0;col<totnod;col++)
         {
-            scanf("%d",&graphMat[row][col]);
+            scanf("%d",&grphmt[row][col]);
         }
     }
 
-    scanf("%s",startName);
-    startIndex=findNodeIndex(startName);
+    scanf("%s",strtnm);
+    startIndex=fndnodindx(strtnm);
 
-    printMatrix();
-    runDfs(startIndex);
+    prntmtrx();
+    rndfs(startIndex);
 
     return 0;
 }
+
+
+
+
+
+
+
