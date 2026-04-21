@@ -1,4 +1,4 @@
-Program 	#include <stdio.h>
+#include <stdio.h>
 #include <string.h>
 /*Abhijit Prasad Mallick
 20252501001*/
